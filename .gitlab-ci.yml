@@ -1,49 +1,69 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-
-stages:          # List of stages for jobs, and their order of execution
+stages:
   - build
   - test
-  - deploy
+  - code_analysis
+  - package_image
 
-include:
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
 
-build-job:       # This job runs in the build stage, which runs first.
+cache:
+  key:
+    files:
+      - pom.xml
+  paths:
+    - .m2/repository
+
+
+build_job:
   stage: build
+  image: maven:3.9.6-eclipse-temurin-21
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - echo "Building the project..."
+    - mvn $MAVEN_CLI_OPTS package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+test_job:
+  stage: test
+  image: maven:3.9.6-eclipse-temurin-21
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - echo "Running tests..."
+    - mvn $MAVEN_CLI_OPTS test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+sonarqube_job:
+  stage: code_analysis
+  image: maven:3.9.6-eclipse-temurin-21
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+    - echo "Running SonarQube analysis..."
+    - >
+      mvn $MAVEN_CLI_OPTS verify sonar:sonar
+      -Dsonar.projectKey=$CI_PROJECT_PATH_SLUG
+      -Dsonar.host.url=$SONAR_HOST_URL
+      -Dsonar.login=$SONAR_TOKEN
+  rules:
+    - if: '$SONAR_HOST_URL'
 
-deploy-job:      # This job runs in the deploy stage.
-  environment: production 
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+
+package_image_job:
+  stage: package_image
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  needs: ["build_job"]
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "Building Docker image..."
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+    - echo "Pushing Docker image to GitLab Container Registry..."
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
