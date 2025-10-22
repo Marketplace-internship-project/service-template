@@ -1,15 +1,24 @@
-FROM maven:3-jdk-8-alpine as builder
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . /usr/src/app
-RUN mvn package
+COPY pom.xml .
 
-FROM openjdk:8-jre-alpine
+RUN mvn dependency:go-offline
 
-COPY --from=builder /usr/src/app/target/*.jar /app.jar
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre-jammy
+
+WORKDIR /app
+
+RUN useradd -ms /bin/bash appuser
+USER appuser
+
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java"]
-CMD ["-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
