@@ -20,7 +20,8 @@
 	<description>Template project for Marketplace microservices</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>22</java.version>
+		<sonar.projectKey>Marketplace-internship-project_YOUR-REPOSITORY-NAME</sonar.projectKey>
 	</properties>
 
 
@@ -75,6 +76,27 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Плагин для анализа кода Sonar -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.0.0.4389</version>
 			</plugin>
 		</plugins>
 	</build>
