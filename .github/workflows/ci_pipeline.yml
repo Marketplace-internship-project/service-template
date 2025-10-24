@@ -67,4 +67,3 @@ jobs:
 
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ substr(github.sha, 0, 7) }}
