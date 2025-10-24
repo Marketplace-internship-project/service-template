@@ -21,8 +21,8 @@
 
 	<properties>
 		<java.version>22</java.version>
-		<sonar.projectKey>marketplace-internship-project_service-template</sonar.projectKey>
-		<sonar.organization>marketplace-internship-project</sonar.organization>
+		<sonar.projectKey>Marketplace-internship-project_service-template</sonar.projectKey>
+		<sonar.organization>Marketplace-internship-project</sonar.organization>
 	</properties>
 
 
