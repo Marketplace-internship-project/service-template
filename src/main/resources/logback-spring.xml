@@ -9,46 +9,46 @@
         </encoder>
     </appender>
 
-    <define name="FILE_APPENDER" class="ch.qos.logback.core.joran.action.define.DefinePropertyAction">
-        <property name="encoder">
+    <appender name="FILE-CONTROLLERS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/controllers.log</file>
+        <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %-40.40logger{39} : %msg%n</pattern>
-        </property>
-        <property name="rollingPolicy">
-            <fileNamePattern>${LOG_PATH}/archived/${fileName}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archived/controllers.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
-        </property>
-    </define>
-
-    <appender name="FILE-CONTROLLERS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/controllers.log</file>
-        <encoder>${encoder}</encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <property name="fileName" value="controllers"/>
-            ${rollingPolicy}
         </rollingPolicy>
     </appender>
 
     <appender name="FILE-SERVICES" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/services.log</file>
-        <encoder>${encoder}</encoder>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %-40.40logger{39} : %msg%n</pattern>
+        </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <property name="fileName" value="services"/>
-            ${rollingPolicy}
+            <fileNamePattern>${LOG_PATH}/archived/services.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
     <appender name="FILE-REPOSITORIES" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/repositories.log</file>
-        <encoder>${encoder}</encoder>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %-40.40logger{39} : %msg%n</pattern>
+        </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <property name="fileName" value="repositories"/>
-            ${rollingPolicy}
+            <fileNamePattern>${LOG_PATH}/archived/repositories.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
-    
+
     <springProfile name="dev">
         <logger name="io.hohichh.marketplace" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
@@ -62,8 +62,6 @@
         </root>
     </springProfile>
 
-
-    
     <springProfile name="prod">
         <logger name="io.hohichh.marketplace.controller" level="INFO" additivity="false">
             <appender-ref ref="FILE-CONTROLLERS"/>
@@ -79,7 +77,7 @@
         </logger>
         
         <root level="WARN">
-            <appender-ref ref="FILE-SERVICES"/>
+            <appender-ref ref="FILE-SERVICES"/> 
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
