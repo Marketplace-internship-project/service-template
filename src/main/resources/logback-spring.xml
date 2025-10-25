@@ -80,4 +80,10 @@
         </root>
     </springProfile>
 
+    <springProfile name="test">
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
 </configuration>
