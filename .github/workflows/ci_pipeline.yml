@@ -79,5 +79,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.REPOSITORY_NAME_LOWERCASE }}:latest
-          cache-from: type=gha,scope=${{ github.workflow }}
-          cache-to: type=gha,mode=max,scope=${{ github.workflow }}
+#          cache-from: type=gha,scope=${{ github.workflow }}
+#          cache-to: type=gha,mode=max,scope=${{ github.workflow }}
