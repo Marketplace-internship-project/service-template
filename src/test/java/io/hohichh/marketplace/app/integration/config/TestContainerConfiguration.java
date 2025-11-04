@@ -1,4 +1,4 @@
-package io.hohichh.marketplace.user.integration.config;
+package io.hohichh.marketplace.app.integration.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

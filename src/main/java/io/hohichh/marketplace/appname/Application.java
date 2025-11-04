@@ -9,12 +9,12 @@ import java.time.Clock;
 
 @SpringBootApplication
 @EnableCaching
-public class UserApplication {
+public class Application {
 	@Bean
 	public Clock clock() {
 		return Clock.systemUTC();
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(UserApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }

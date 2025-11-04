@@ -45,15 +45,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sonar-
 
-      - name: Build project (compile)
-        run: ./mvnw --batch-mode compile
 
-
-      - name: Run tests (Unit and Integration)
+      - name: Build and Run tests (Unit and Integration)
         run: ./mvnw --batch-mode verify
 
 
-      - name: SonarCloud Code Analysis
+      - name: Analyze with SonarCloud
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

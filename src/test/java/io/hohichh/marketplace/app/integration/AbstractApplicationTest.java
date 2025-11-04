@@ -1,12 +1,11 @@
-package io.hohichh.marketplace.user.integration;
+package io.hohichh.marketplace.app.integration;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.hohichh.marketplace.user.integration.config.TestClockConfiguration;
-import io.hohichh.marketplace.user.integration.config.TestContainerConfiguration;
-import io.hohichh.marketplace.user.repository.CardRepository;
-import io.hohichh.marketplace.user.repository.UserRepository;
+import io.hohichh.marketplace.app.integration.config.TestClockConfiguration;
+import io.hohichh.marketplace.app.integration.config.TestContainerConfiguration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -30,20 +29,12 @@ import static org.mockito.Mockito.mock;
         TestContainerConfiguration.class
 })
 public abstract class AbstractApplicationTest {
-    @Autowired
-    protected CacheManager cacheManager;
 
     @Autowired
     protected TestRestTemplate restTemplate;
 
     @Autowired
     protected Clock clock;
-
-    @MockitoSpyBean
-    protected UserRepository userRepository;
-
-    @MockitoSpyBean
-    protected CardRepository cardRepository;
 
     static class RestResponsePage<T> extends PageImpl<T> {
 
