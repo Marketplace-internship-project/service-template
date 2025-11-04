@@ -1,4 +1,4 @@
-package io.hohichh.marketplace.app.mockunit;
+package io.hohichh.marketplace.appname.mockunit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

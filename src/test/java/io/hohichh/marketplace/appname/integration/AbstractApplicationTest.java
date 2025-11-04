@@ -1,21 +1,19 @@
-package io.hohichh.marketplace.app.integration;
+package io.hohichh.marketplace.appname.integration;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.hohichh.marketplace.app.integration.config.TestClockConfiguration;
-import io.hohichh.marketplace.app.integration.config.TestContainerConfiguration;
+import io.hohichh.marketplace.appname.integration.config.TestClockConfiguration;
+import io.hohichh.marketplace.appname.integration.config.TestContainerConfiguration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.time.Clock;
 import java.util.List;
