@@ -1,4 +1,4 @@
-package io.hohichh.marketplace.user;
+package io.hohichh.marketplace.appname;
 
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
