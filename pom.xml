@@ -34,6 +34,16 @@
             ${project.reporting.outputDirectory}/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version> <!-- Версия MapStruct -->
+<!--        Исключение директорий для анализа sonar-->
+        <sonar.coverage.exclusions>
+            **/dto/**,
+            **/model/**,
+            **/exception/**,
+            **/config/**,
+            **/mapper/**,
+            **/security/**,
+            **/*Application.java
+        </sonar.coverage.exclusions>
     </properties>
 
     <!-- Зависимости проекта -->
